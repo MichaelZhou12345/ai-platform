@@ -1,0 +1,15 @@
+# AI组织系统配置文件
+
+## 系统配置
+system:
+  # 团队leader，只有leader有权限添加OKR以及生成周报
+  leader: "mikesjzhou"
+
+## 数据库配置
+database:
+  host: "127.0.0.1"
+  port: 3306
+  user: "ai_org_user"
+  password: "AiOrg@2026!"
+  database: "ai_org"
+  charset: "utf8mb4"

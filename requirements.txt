@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pymysql
+httpx
+pydantic
+cos-python-sdk-v5
+pyyaml
+python-multipart
+feedparser

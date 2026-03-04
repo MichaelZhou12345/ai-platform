@@ -1,0 +1,1322 @@
+/* ==================== CSS变量定义 ==================== */
+:root {
+    --primary-color: #0052D9;
+    --primary-hover: #0043B3;
+    --primary-light: #E6F0FF;
+}
+
+/* ==================== 顶部导航栏置顶样式 ==================== */
+nav.sticky {
+    transition: box-shadow 0.3s ease;
+}
+
+/* 滚动时增强阴影效果 */
+nav.sticky.scrolled {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* ==================== 复制按钮样式 ==================== */
+.group:hover button.copy-btn {
+    opacity: 1 !important;
+}
+
+/* 确保复制按钮不会被遮挡 */
+.markdown-content {
+    position: relative;
+}
+
+/* Tab导航栏置顶样式 */
+.bg-white.sticky {
+    transition: box-shadow 0.3s ease;
+}
+
+.bg-white.sticky.scrolled {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== Markdown内容样式 ==================== */
+.markdown-content {
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+.markdown-content h1 { 
+    font-size: 1.5em; 
+    font-weight: bold; 
+    margin: 0.5em 0; 
+    color: #1f2937; 
+}
+
+.markdown-content h2 { 
+    font-size: 1.3em; 
+    font-weight: bold; 
+    margin: 0.5em 0; 
+    color: #374151; 
+}
+
+.markdown-content h3 { 
+    font-size: 1.1em; 
+    font-weight: bold; 
+    margin: 0.5em 0; 
+    color: #4b5563; 
+}
+
+.markdown-content p { 
+    margin: 0.5em 0; 
+}
+
+/* 无序列表样式 */
+.markdown-content ul {
+    margin: 0.8em 0;
+    padding-left: 1.5em;
+    list-style-type: disc;
+}
+
+.markdown-content ul li {
+    margin: 0.4em 0;
+    padding-left: 0.3em;
+    line-height: 1.7;
+}
+
+.markdown-content ul ul {
+    list-style-type: circle;
+}
+
+.markdown-content ul ul ul {
+    list-style-type: square;
+}
+
+/* 有序列表样式 */
+.markdown-content ol {
+    margin: 0.8em 0;
+    padding-left: 1.5em;
+    list-style-type: decimal;
+}
+
+.markdown-content ol li {
+    margin: 0.4em 0;
+    padding-left: 0.3em;
+    line-height: 1.7;
+}
+
+.markdown-content ol ol {
+    list-style-type: lower-alpha;
+}
+
+.markdown-content ol ol ol {
+    list-style-type: lower-roman;
+}
+
+/* 表格样式 */
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 0.95em;
+}
+
+.markdown-content table thead {
+    background-color: #f9fafb;
+}
+
+.markdown-content table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    background-color: #f9fafb;
+}
+
+.markdown-content table td {
+    padding: 10px 16px;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.markdown-content table tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.markdown-content table tr:hover {
+    background-color: #f3f4f6;
+}
+
+/* 列表中的表格样式 */
+.markdown-content ul table,
+.markdown-content ol table {
+    margin: 0.5em 0;
+}
+
+/* 链接样式 */
+.markdown-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--primary-color);
+    transition: all 0.2s ease;
+    padding: 0 2px;
+}
+
+.markdown-content a:hover {
+    color: var(--primary-hover);
+    border-bottom: 2px solid var(--primary-hover);
+    background-color: var(--primary-light);
+}
+
+/* 引用样式 */
+.markdown-content blockquote {
+    margin: 1em 0;
+    padding: 0.8em 1em;
+    border-left: 4px solid var(--primary-color);
+    background-color: #f8fafc;
+    color: #475569;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+}
+
+.markdown-content blockquote p {
+    margin: 0.3em 0;
+}
+
+.markdown-content blockquote p:first-child {
+    margin-top: 0;
+}
+
+.markdown-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content blockquote code {
+    font-style: normal;
+}
+
+.markdown-content code { 
+    background: #f3f4f6; 
+    padding: 0.2em 0.4em; 
+    border-radius: 3px; 
+    font-size: 0.9em; 
+    color: #ef4444; 
+}
+
+.markdown-content pre { 
+    background: #f3f4f6; 
+    padding: 1em; 
+    border-radius: 5px; 
+    overflow-x: auto; 
+}
+
+.markdown-content pre code { 
+    background: none; 
+    padding: 0; 
+    color: #1f2937; 
+}
+
+.markdown-content img { 
+    max-width: 100%;
+    width: auto;
+    max-height: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 640px) {
+    .markdown-content img {
+        max-width: 90%;
+    }
+}
+
+.markdown-content img:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ==================== 拖拽排序样式 ==================== */
+.sortable-ghost {
+    opacity: 0.4;
+    background: var(--primary-light);
+}
+
+.sortable-drag {
+    opacity: 0.8;
+}
+
+.drag-handle {
+    cursor: move;
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* ==================== Tab样式 ==================== */
+.tab-active {
+    border-bottom: 3px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Tab导航链接样式 */
+#desktopTabs a,
+.mobile-tab-btn,
+#mobileMenu a {
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+#desktopTabs a:hover,
+#mobileMenu a:hover {
+    text-decoration: none;
+}
+
+/* 移动端快捷Tab按钮样式 */
+.mobile-tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-tab-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.mobile-tab-btn.active i {
+    color: white !important;
+}
+
+/* ==================== KR项样式 ==================== */
+.kr-item {
+    transition: all 0.3s ease;
+}
+
+.kr-item:hover {
+    background-color: #f9fafb;
+}
+
+/* ==================== 周进展hover效果 ==================== */
+.weekly-progress-item {
+    position: relative;
+}
+
+.weekly-progress-item .group-hover\:opacity-100 {
+    transition: opacity 0.2s ease;
+}
+
+.weekly-progress-item:hover .group-hover\:opacity-100 {
+    opacity: 1 !important;
+}
+
+/* ==================== 骨架屏样式 ==================== */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-text {
+    height: 16px;
+    margin: 8px 0;
+}
+
+.skeleton-title {
+    height: 24px;
+    margin: 12px 0;
+    width: 60%;
+}
+
+.skeleton-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* ==================== 模态框样式 ==================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;  /* 基础模态框层级 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 待办模态框需要更高的层级（在周报查看器之上） */
+#todoModal {
+    z-index: 10050 !important;
+}
+
+#todoModal.active {
+    z-index: 10050 !important;
+}
+
+/* ==================== 加载动画 ==================== */
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==================== 可编辑内容样式 ==================== */
+[contenteditable="true"] {
+    cursor: text;
+    transition: background-color 0.2s;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+[contenteditable="true"]:hover {
+    background-color: #f9fafb;
+}
+
+[contenteditable="true"]:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    background-color: white;
+}
+
+/* ==================== 卡片视图布局 ==================== */
+#teamCardView:not(.hidden) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+
+#teamCardView .grid {
+    align-items: start;
+}
+
+@media (min-width: 768px) {
+    #teamCardView:not(.hidden) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    #teamCardView:not(.hidden) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ==================== 脑图拖拽样式 ==================== */
+#teamMindMapViewChart {
+    cursor: grab;
+}
+
+#teamMindMapViewChart:active {
+    cursor: grabbing;
+}
+
+/* ==================== 演讲者模式样式 ==================== */
+body.presenter-mode {
+    overflow: hidden;
+}
+
+#presenterModeOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 40px;
+}
+
+#presenterModeOverlay .presenter-header {
+    display: flex;
+    justify-between: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+#presenterModeOverlay .presenter-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+#presenterModeOverlay .presenter-content {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* 演讲者模式待办小卡片容器 - 绝对定位在周进展右侧，位置由JS动态计算 */
+#presenterModeOverlay .presenter-todo-cards {
+    position: absolute;
+    top: 32px; /* 与周进展标题下方的内容区域对齐 */
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+    /* 默认隐藏，等待JS计算位置后显示 */
+    opacity: 0; 
+    transition: opacity 0.3s ease;
+}
+
+/* 移动端隐藏待办卡片 */
+@media (max-width: 768px) {
+    #presenterModeOverlay .presenter-todo-cards {
+        display: none !important;
+    }
+}
+
+/* 演讲者模式待办小卡片 */
+#presenterModeOverlay .presenter-todo-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 82, 217, 0.2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    opacity: 0.6; /* 默认60%透明度 */
+    position: relative;
+    /* 使用CSS变量存储悬停时的左移距离 */
+    --hover-offset: 0px;
+}
+
+#presenterModeOverlay .presenter-todo-card:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 82, 217, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 82, 217, 0.2);
+    opacity: 1; /* 悬停时完全不透明 */
+    transform: translateX(var(--hover-offset)) scale(1.02); /* 使用CSS变量控制的左移并放大1.02倍 */
+}
+
+#presenterModeOverlay .objective-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+#presenterModeOverlay .objective-header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+#presenterModeOverlay .objective-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+#presenterModeOverlay .kr-item {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border-left: 4px solid #0052D9;
+}
+
+#presenterModeOverlay .kr-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #0052D9;
+    margin-bottom: 16px;
+}
+
+#presenterModeOverlay .member-progress {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+#presenterModeOverlay .exit-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    /* 液态玻璃背景 */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* 玻璃边缘 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    /* 阴影和光泽 */
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    
+    color: white;
+    padding: 12px 24px;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10000;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#presenterModeOverlay .exit-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.45),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+#presenterModeOverlay .exit-button:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 
+        0 4px 12px 0 rgba(31, 38, 135, 0.37),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+#presenterModeOverlay .page-info {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    /* 液态玻璃背景 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* 玻璃边缘 */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    /* 阴影和光泽 */
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: white;
+    /* 多层文字投影，增强立体感和发光效果 */
+    text-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.2),
+        0 0 8px rgba(255, 255, 255, 0.3),
+        0 0 16px rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* ==================== 左侧目录样式 ==================== */
+#teamOkrSidebar {
+    transition: width 0.3s ease;
+}
+
+#teamOkrSidebar .sticky {
+    position: sticky;
+    top: 1.5rem;
+}
+
+#teamOkrToc::-webkit-scrollbar {
+    width: 6px;
+}
+
+#teamOkrToc::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#teamOkrToc::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+#teamOkrToc::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 周报目录样式 */
+#reportViewSidebar {
+    transition: width 0.3s ease;
+}
+
+#reportViewSidebar .sticky {
+    position: sticky;
+    top: 1.5rem;
+}
+
+#reportViewToc::-webkit-scrollbar {
+    width: 6px;
+}
+
+#reportViewToc::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+#reportViewToc::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+#reportViewToc::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.toc-item {
+    transition: all 0.2s ease;
+}
+
+.toc-item a {
+    text-decoration: none;
+}
+
+.toc-item:hover a {
+    color: var(--primary-color);
+}
+
+.toc-item.active {
+    background-color: #eff6ff;
+    border-left: 3px solid var(--primary-color);
+}
+
+.toc-item.active a {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ==================== 侧边栏样式 ==================== */
+.team-okr-container {
+    position: relative;
+}
+
+.sidebar {
+    width: 3.5rem;
+    transition: width 0.3s ease;
+    position: fixed;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+}
+
+/* xl屏幕以下：侧边栏默认不显示 */
+@media (max-width: 1279px) {
+    .sidebar {
+        display: none;
+    }
+    
+    /* 展开时才显示 */
+    .sidebar.expanded {
+        display: block;
+    }
+}
+
+/* xl屏幕及以上：侧边栏始终显示 */
+@media (min-width: 1800px) {
+    .sidebar {
+        display: block;
+    }
+}
+
+.sidebar.expanded {
+    width: 16rem;
+}
+
+/* 收起时显示的展开按钮（圆形） */
+.sidebar .sidebar-collapsed button {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f3f4f6;
+    color: #0052D9;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    opacity: 0.2;
+}
+
+.sidebar .sidebar-collapsed button:hover {
+    transform: scale(1.1);
+    background: #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 1;
+}
+
+/* 周报内容区域样式 */
+.report-content-area {
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+/* 周报侧边栏特殊样式：使用相对定位，让它占据空间 */
+#reportViewSidebar {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    flex-shrink: 0;
+    padding: 1.5rem 0 1.5rem 1.5rem;
+}
+
+/* xl屏幕以下：周报侧边栏默认不显示 */
+@media (max-width: 1279px) {
+    #reportViewSidebar {
+        display: none;
+    }
+    
+    /* 展开时才显示 */
+    #reportViewSidebar.expanded {
+        display: block;
+        position: fixed;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        padding: 0;
+    }
+}
+
+/* xl屏幕及以上：周报侧边栏始终显示 */
+@media (min-width: 1280px) {
+    #reportViewSidebar {
+        display: block;
+    }
+}
+
+/* ==================== AI对话窗口样式优化 ==================== */
+#ai-messages .markdown-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 0.75rem;
+}
+
+#ai-messages .markdown-content table th,
+#ai-messages .markdown-content table td {
+    padding: 6px 10px;
+    min-width: 80px;
+}
+
+#ai-messages .markdown-content pre {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+#ai-messages .markdown-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 移动端AI聊天窗口全屏显示 */
+@media (max-width: 768px) {
+    #ai-chat-window {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        transform-origin: center !important;
+    }
+    
+    #ai-chat-window .rounded-t-xl {
+        border-radius: 0 !important;
+    }
+    
+    #ai-chat-window .rounded-b-xl {
+        border-radius: 0 !important;
+    }
+    
+    /* AI输入框移动端样式 - 防止缩放 */
+    #ai-input {
+        font-size: 16px !important;
+    }
+}
+
+/* AI输入框基础样式 - 确保字体大小 */
+#ai-input {
+    font-size: 16px;
+}
+
+/* ==================== 移动端菜单样式 ==================== */
+#mobileMenu {
+    transition: all 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobileMenu:not(.hidden) {
+    max-height: 500px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#mobileMenu button {
+    transition: all 0.2s ease;
+}
+
+#mobileMenu button:active {
+    transform: scale(0.98);
+}
+
+/* ==================== 移动端快捷Tab按钮样式 ==================== */
+.mobile-tab-btn {
+    transition: all 0.2s ease;
+}
+
+.mobile-tab-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.mobile-tab-btn.active i {
+    color: white;
+}
+
+/* ==================== 周报查看器沉稳主题样式 ==================== */
+
+/* 沉稳主题的基础样式 */
+.calm-theme {
+    --calm-primary: #5D6D7E; /* 稳重的蓝灰色 */
+    --calm-secondary: #A9CCE3; /* 柔和的浅蓝色 */
+    --calm-accent: #85929E; /* 中性灰色 */
+    --calm-bg: #FDFEFE; /* 柔和的白色背景 */
+    --calm-text: #283747; /* 深色文本 */
+    --calm-border: #D5D8DC; /* 浅灰边框 */
+    --calm-code-bg: #F4F6F7; /* 代码块背景 */
+    --calm-quote-bg: #FDFEFE; /* 引用块背景 */
+    --calm-quote-border: #A9CCE3; /* 引用块边框 */
+    --calm-table-header: #FDFEFE; /* 表头背景 */
+    --calm-table-border: #D5D8DC; /* 表格边框 */
+    --calm-link-color: #5499C7; /* 链接颜色 */
+    --calm-link-hover: #2980B9; /* 链接悬停颜色 */
+}
+
+/* Cherry Markdown 沉稳主题覆盖 */
+.calm-theme.cherry-markdown {
+    background-color: var(--calm-bg);
+    color: var(--calm-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    line-height: 1.8;
+    padding: 2rem 3rem;
+}
+
+.cherry-previewer {
+    background-color: #fff;
+    line-height: 1.85;
+}
+
+.cherry-previewer p {
+    line-height: 1.85;
+    margin: 0.8em 0;
+}
+
+.cherry-previewer li {
+    line-height: 1.85;
+    margin: 0.5em 0;
+}
+
+/* Cherry Markdown 无序列表层级样式 */
+.cherry-previewer ul {
+    list-style-type: disc;
+    padding-left: 2em;
+    margin: 0.8em 0;
+}
+
+.cherry-previewer ul ul {
+    list-style-type: circle;
+    margin: 0.5em 0;
+}
+
+.cherry-previewer ul ul ul {
+    list-style-type: square;
+    margin: 0.5em 0;
+}
+
+.cherry-previewer ul ul ul ul {
+    list-style-type: disc;
+    margin: 0.5em 0;
+}
+
+/* Cherry Markdown 有序列表层级样式 */
+.cherry-previewer ol {
+    list-style-type: decimal;
+    padding-left: 2em;
+    margin: 0.8em 0;
+}
+
+.cherry-previewer ol ol {
+    list-style-type: lower-alpha;
+    margin: 0.5em 0;
+}
+
+.cherry-previewer ol ol ol {
+    list-style-type: lower-roman;
+    margin: 0.5em 0;
+}
+
+.cherry-previewer ol ol ol ol {
+    list-style-type: decimal;
+    margin: 0.5em 0;
+}
+
+/* 标题样式 */
+.calm-theme h1,
+.calm-theme h2,
+.calm-theme h3,
+.calm-theme h4,
+.calm-theme h5,
+.calm-theme h6 {
+    color: var(--calm-primary);
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    line-height: 1.4;
+}
+
+.calm-theme h1 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--calm-secondary);
+    padding-bottom: 0.5em;
+}
+
+.calm-theme h2 {
+    font-size: 1.75em;
+    border-bottom: 1px solid var(--calm-border);
+    padding-bottom: 0.4em;
+}
+
+.calm-theme h3 {
+    font-size: 1.5em;
+}
+
+.calm-theme h4 {
+    font-size: 1.25em;
+}
+
+/* 段落样式 */
+.calm-theme p {
+    margin: 1em 0;
+    color: var(--calm-text);
+}
+
+/* 链接样式 */
+.calm-theme a {
+    color: var(--calm-link-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.calm-theme a:hover {
+    color: var(--calm-link-hover);
+    border-bottom-color: var(--calm-link-hover);
+}
+
+.calm-theme a:active {
+    transform: translateY(1px);
+}
+
+/* 代码块样式 */
+.calm-theme code {
+    background-color: var(--calm-code-bg);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--calm-primary);
+}
+
+.calm-theme pre {
+    background-color: var(--calm-code-bg);
+    border: 1px solid var(--calm-border);
+    border-radius: 6px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1.5em 0;
+}
+
+.calm-theme pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.9em;
+}
+
+/* 引用块样式 */
+.calm-theme blockquote {
+    background-color: var(--calm-quote-bg);
+    border-left: 4px solid var(--calm-quote-border);
+    padding: 1em 1.5em;
+    margin: 1.5em 0;
+    color: var(--calm-accent);
+    border-radius: 0 4px 4px 0;
+}
+
+/* 列表样式 */
+.calm-theme ul,
+.calm-theme ol {
+    margin: 1em 0;
+    padding-left: 2em;
+}
+
+.calm-theme li {
+    margin: 0.5em 0;
+    color: var(--calm-text);
+}
+
+.calm-theme li::marker {
+    color: var(--calm-accent);
+}
+
+/* 表格样式 */
+.calm-theme table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    border: 1px solid var(--calm-table-border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.calm-theme th {
+    background-color: var(--calm-table-header);
+    color: var(--calm-primary);
+    font-weight: 600;
+    padding: 0.8em 1em;
+    border-bottom: 2px solid var(--calm-border);
+    text-align: left;
+}
+
+.calm-theme td {
+    padding: 0.8em 1em;
+    border-bottom: 1px solid var(--calm-table-border);
+    color: var(--calm-text);
+}
+
+.calm-theme tr:hover {
+    background-color: var(--calm-code-bg);
+}
+
+.calm-theme tr:last-child td {
+    border-bottom: none;
+}
+
+/* 分隔线样式 */
+.calm-theme hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--calm-border), transparent);
+    margin: 2em 0;
+}
+
+/* 图片样式 */
+.calm-theme img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 1em 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.calm-theme img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 强调样式 */
+.calm-theme strong {
+    color: var(--calm-primary);
+    font-weight: 600;
+}
+
+.calm-theme em {
+    color: var(--calm-accent);
+    font-style: italic;
+}
+
+/* 删除线样式 */
+.calm-theme del {
+    color: var(--calm-accent);
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* 链接预览面板样式 */
+#linkPreviewPanel {
+    z-index: 10040;
+}
+
+#linkPreviewOverlay {
+    z-index: 10039;
+}
+
+/* 链接预览面板动画 */
+#linkPreviewPanel.panel-enter {
+    transform: translateX(100%);
+}
+
+#linkPreviewPanel.panel-enter-active {
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+#linkPreviewPanel.panel-exit {
+    transform: translateX(0);
+}
+
+#linkPreviewPanel.panel-exit-active {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* ==================== 设置面板样式 ==================== */
+.settings-tab-btn {
+    transition: all 0.2s ease;
+}
+
+.settings-tab-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.settings-tab-btn.active {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+}
+
+.settings-tab-btn.active i {
+    color: var(--primary-color);
+}
+
+.settings-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==================== AI助手建议问题滚动样式 ==================== */
+.scrollbar-thin {
+    word-wrap: normal;
+    word-break: keep-all;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    overflow-x: auto;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(243, 244, 246, 0.5);
+    border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* 确保折叠状态下按钮不换行 */
+.suggested-question-btn {
+    flex-shrink: 0;
+}
+
+/* 拖拽滚动样式 */
+.draggable-scroll {
+    cursor: grab;
+    user-select: none;
+}
+
+.draggable-scroll.cursor-grabbing {
+    cursor: grabbing;
+}
+
+.draggable-scroll:active {
+    cursor: grabbing;
+}

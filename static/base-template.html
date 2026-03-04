@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{TITLE}} - 算法一组 AI 组织平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Marked配置文件（必须在所有使用marked的JS之前加载） -->
+    <script src="/static/marked-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Cherry Markdown 编辑器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.38/dist/cherry-markdown.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.38/dist/cherry-markdown.min.js"></script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center flex-1">
+                    <h1 class="text-lg sm:text-xl md:text-2xl font-bold truncate" style="color: var(--primary-color);" title="算法一组 AI 组织平台">算法一组 AI 组织平台</h1>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <!-- 移动端菜单按钮 -->
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600" title="菜单">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <!-- 用户信息（在小屏幕上隐藏文字） -->
+                    <div id="userInfo" class="hidden sm:flex items-center space-x-3 relative">
+                        <div class="relative">
+                            <button id="userMenuBtn" onclick="toggleUserMenu()" class="flex items-center space-x-3 hover:bg-gray-100 rounded-lg p-2 transition-colors">
+                                <img id="userAvatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full" alt="用户头像">
+                                <span id="userName" class="text-sm sm:text-base text-gray-700 font-medium hidden md:block"></span>
+                                <i class="fas fa-chevron-down text-gray-500 text-sm"></i>
+                            </button>
+                            
+                            <!-- 下拉菜单 -->
+                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+                                <button id="settingsBtn" onclick="openSettings(); toggleUserMenu();" class="hidden w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center space-x-3 border-b">
+                                    <i class="fas fa-cog text-gray-600"></i>
+                                    <span class="text-gray-700">设置</span>
+                                </button>
+                                <button onclick="toggleUserMenu();" class="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center space-x-3 text-gray-500">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>关闭菜单</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 移动端快捷Tab按钮（团队OKR和个人OKR） -->
+            <div class="lg:hidden flex space-x-2 pb-3 border-b border-gray-100">
+                <a href="/team" id="mobile-tab-team" class="mobile-tab-btn flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-all text-gray-700 hover:bg-gray-100">
+                    <i class="fas fa-users mr-2" style="color: var(--primary-color);"></i>团队OKR
+                </a>
+                <a href="/personal" id="mobile-tab-personal" class="mobile-tab-btn flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-all text-gray-700 hover:bg-gray-100">
+                    <i class="fas fa-user mr-2" style="color: var(--primary-color);"></i>个人OKR
+                </a>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单（下拉） -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-1">
+                <a href="/team" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-users mr-3" style="color: var(--primary-color);"></i>
+                    团队OKR
+                </a>
+
+                <a href="/personal" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-user mr-3" style="color: var(--primary-color);"></i>
+                    个人OKR
+                </a>
+                
+                <a href="/reports" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-file-alt mr-3" style="color: var(--primary-color);"></i>
+                    团队周报
+                </a>
+                
+                <a href="/next-week" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-lightbulb mr-3" style="color: var(--primary-color);"></i>
+                    知彼解己
+                </a>
+                <a href="/todos" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-tasks mr-3" style="color: var(--primary-color);"></i>
+                    以终为始
+                </a>
+                <a href="/ideas" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-lightbulb mr-3" style="color: var(--primary-color);"></i>
+                    集思广益
+                </a>
+                <a href="/platforms" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-boxes mr-3" style="color: var(--primary-color);"></i>
+                    统合综效
+                </a>
+                <a href="/continuous-improvement" class="w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center">
+                    <i class="fas fa-sync-alt mr-3" style="color: var(--primary-color);"></i>
+                    不断更新
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tab导航（桌面端显示） -->
+    <div class="bg-white border-b hidden lg:block sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8" id="desktopTabs">
+                <a href="/team" id="tab-team" class="py-4 px-2 font-medium text-sm {{TEAM_ACTIVE}}">
+                    团队OKR
+                </a>
+                <a href="/personal" id="tab-personal" class="py-4 px-2 font-medium text-sm {{PERSONAL_ACTIVE}}">
+                    个人OKR
+                </a>
+                <a href="/reports" id="tab-reports" class="py-4 px-2 font-medium text-sm {{REPORTS_ACTIVE}}">
+                    团队周报
+                </a>
+                <a href="/next-week" id="tab-next-week" class="py-4 px-2 font-medium text-sm {{NEXT_WEEK_ACTIVE}}">
+                    知彼解己
+                </a>
+                <a href="/todos" id="tab-todos" class="py-4 px-2 font-medium text-sm {{TODOS_ACTIVE}}">
+                    以终为始
+                </a>
+                <a href="/ideas" id="tab-ideas" class="py-4 px-2 font-medium text-sm {{IDEAS_ACTIVE}}">
+                    集思广益
+                </a>
+                <a href="/platforms" id="tab-platforms" class="py-4 px-2 font-medium text-sm {{PLATFORMS_ACTIVE}}">
+                    统合综效
+                </a>
+                <a href="/continuous-improvement" id="tab-continuous-improvement" class="py-4 px-2 font-medium text-sm {{CONTINUOUS_ACTIVE}}">
+                    不断更新
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {{CONTENT}}
+    </main>
+
+    {{MODALS}}
+
+    <!-- 页脚签名 -->
+    <footer class="mt-12 py-6 text-center text-gray-500 text-sm border-t">
+        <p>Created by josephpan</p>
+    </footer>
+
+    {{SCRIPTS}}
+</body>
+</html>

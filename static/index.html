@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>算法一组 AI 组织平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Marked配置文件（必须在所有使用marked的JS之前加载） -->
+    <script src="/static/marked-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Cherry Markdown 编辑器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.38/dist/cherry-markdown.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.38/dist/cherry-markdown.min.js"></script>
+    
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center flex-1">
+                    <h1 class="text-lg sm:text-xl md:text-2xl font-bold truncate" style="color: var(--primary-color);" title="算法一组 AI 组织平台">算法一组 AI 组织平台</h1>
+                </div>
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <!-- 移动端菜单按钮 -->
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600" title="菜单">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <!-- 用户信息（在小屏幕上隐藏文字） -->
+                    <div id="userInfo" class="hidden sm:flex items-center space-x-3 relative">
+                        <div class="relative">
+                            <button id="userMenuBtn" onclick="toggleUserMenu()" class="flex items-center space-x-3 hover:bg-gray-100 rounded-lg p-2 transition-colors">
+                                <img id="userAvatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full" alt="用户头像">
+                                <span id="userName" class="text-sm sm:text-base text-gray-700 font-medium hidden md:block"></span>
+                                <i class="fas fa-chevron-down text-gray-500 text-sm"></i>
+                            </button>
+                            
+                            <!-- 下拉菜单 -->
+                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+                                <button id="settingsBtn" onclick="openSettings(); toggleUserMenu();" class="hidden w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center space-x-3 border-b">
+                                    <i class="fas fa-cog text-gray-600"></i>
+                                    <span class="text-gray-700">设置</span>
+                                </button>
+                                <button onclick="toggleUserMenu();" class="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center space-x-3 text-gray-500">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>关闭菜单</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 移动端快捷Tab按钮（团队OKR和个人OKR） -->
+            <div class="lg:hidden flex space-x-2 pb-3 border-b border-gray-100">
+                <a href="/team" id="mobile-tab-team" class="mobile-tab-btn flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-all text-gray-700 hover:bg-gray-100 no-underline text-center">
+                    <i class="fas fa-users mr-2" style="color: var(--primary-color);"></i>团队OKR
+                </a>
+                <a href="/personal" id="mobile-tab-personal" class="mobile-tab-btn flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-all text-gray-700 hover:bg-gray-100 no-underline text-center">
+                    <i class="fas fa-user mr-2" style="color: var(--primary-color);"></i>个人OKR
+                </a>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单（下拉） -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-1">
+                <a href="/team" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-users mr-3" style="color: var(--primary-color);"></i>
+                    团队OKR
+                </a>
+
+                <a href="/personal" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-user mr-3" style="color: var(--primary-color);"></i>
+                    个人OKR
+                </a>
+                
+                <a href="/reports" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-file-alt mr-3" style="color: var(--primary-color);"></i>
+                    团队周报
+                </a>
+                
+                <a href="/next-week" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-lightbulb mr-3" style="color: var(--primary-color);"></i>
+                    知彼解己
+                </a>
+                <a href="/todos" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-tasks mr-3" style="color: var(--primary-color);"></i>
+                    以终为始
+                </a>
+                <a href="/ideas" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-lightbulb mr-3" style="color: var(--primary-color);"></i>
+                    集思广益
+                </a>
+                <a href="/platforms" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-boxes mr-3" style="color: var(--primary-color);"></i>
+                    统合综效
+                </a>
+                <a href="/continuous-improvement" class="block w-full text-left py-2 px-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 flex items-center no-underline">
+                    <i class="fas fa-sync-alt mr-3" style="color: var(--primary-color);"></i>
+                    不断更新
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tab导航（桌面端显示） -->
+    <div class="bg-white border-b hidden lg:block sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8" id="desktopTabs">
+                <a href="/team" id="tab-team" class="tab-active py-4 px-2 font-medium text-sm no-underline">
+                    团队OKR
+                </a>
+                <a href="/personal" id="tab-personal" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    个人OKR
+                </a>
+                <a href="/reports" id="tab-reports" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    团队周报
+                </a>
+                <a href="/next-week" id="tab-next-week" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    知彼解己
+                </a>
+                <a href="/todos" id="tab-todos" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    以终为始
+                </a>
+                <a href="/ideas" id="tab-ideas" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    集思广益
+                </a>
+                <a href="/platforms" id="tab-platforms" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    统合综效
+                </a>
+                <a href="/continuous-improvement" id="tab-continuous-improvement" class="py-4 px-2 font-medium text-sm text-gray-500 hover:text-gray-700 no-underline">
+                    不断更新
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 团队OKR Tab -->
+        <div id="content-team" class="tab-content">
+            <div class="mb-6 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <h2 class="text-2xl font-bold text-gray-900">团队OKR</h2>
+                    <div class="flex bg-gray-100 rounded-lg p-1">
+                        <button onclick="switchTeamView('list')" id="view-btn-list" class="px-3 py-1 rounded-md text-sm font-medium bg-white shadow-sm text-gray-900 transition-all">
+                            <i class="fas fa-list mr-1"></i>列表
+                        </button>
+                        <button onclick="switchTeamView('card')" id="view-btn-card" class="px-3 py-1 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 transition-all">
+                            <i class="fas fa-user-large mr-1"></i>成员
+                        </button>
+                        <button onclick="switchTeamView('mindmap')" id="view-btn-mindmap" class="px-3 py-1 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 transition-all">
+                            <i class="fas fa-project-diagram mr-1"></i>脑图
+                        </button>
+                    </div>
+                    <select id="teamMemberFilter" class="hidden px-3 py-1 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="">全部成员</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button id="presenterModeBtn" class="text-white px-4 py-2 rounded-lg transition" style="background-color: #8A2BE2;" onmouseover="this.style.backgroundColor='#7B27A5'" onmouseout="this.style.backgroundColor='#8A2BE2'" onclick="enterPresenterMode()">
+                        <i class="fas fa-desktop mr-2"></i>演讲者模式
+                    </button>
+                    <button id="exportWordBtn" class="hidden text-white px-4 py-2 rounded-lg transition" style="background-color: var(--primary-color);"
+                        onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'" onclick="exportToHtml()">
+                        <i class="fas fa-file-code mr-2"></i>导出HTML
+                    </button>
+                    <button id="addObjectiveBtn" class="hidden text-white px-4 py-2 rounded-lg transition" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        <i class="fas fa-plus mr-2"></i>添加目标
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 日期过滤器 -->
+            <div class="mb-4 flex items-center space-x-3">
+                <label class="text-sm font-medium text-gray-700">
+                    <i class="fas fa-calendar-alt mr-1" style="color: var(--primary-color);"></i>
+                    最早更新日期：
+                </label>
+                <div class="relative">
+                    <input type="date" id="progressDateFilter" 
+                           class="px-4 py-2 border-2 rounded-lg text-sm bg-white hover:bg-gray-50 transition-all focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           onchange="applyProgressDateFilter()">
+                </div>
+                <button onclick="clearProgressDateFilter()" 
+                        class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border-2 rounded-lg hover:bg-gray-50 transition-all">
+                    <i class="fas fa-times mr-1"></i>清除
+                </button>
+            </div>
+            
+            <!-- 团队OKR主内容区（包含左侧目录和右侧内容） -->
+            <div class="team-okr-container">
+                <!-- 左侧目录（仅在大屏幕显示，默认在xl屏幕展开，其他尺寸折叠） -->
+                
+                <aside id="teamOkrSidebar" class="sidebar xl:block">
+                    <!-- 展开时的完整目录 -->
+                    
+                    <div class="sticky top-6 bg-white rounded-lg shadow-sm border p-4 sidebar-expanded">
+                        <div class="flex items-center justify-between mb-4 sidebar-header">
+                            <h3 class="font-bold text-gray-900">
+                                <i class="fas fa-list-ul mr-2" style="color: var(--primary-color);"></i>目录
+                            </h3>
+                            <button id="toggleSidebarBtn" onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600" title="收起">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        
+                        <nav id="teamOkrToc" class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto sidebar-content">
+                            <!-- 目录内容将通过JavaScript动态生成 -->
+                        </nav>
+                    </div>
+                    
+                    <!-- 收起时的按钮 -->
+                    
+                    <div class="sticky top-6 sidebar-collapsed hidden">
+                        <button id="expandSidebarBtn" onclick="toggleSidebar()" class="w-full flex items-center justify-center bg-white rounded-lg shadow-sm border p-3 text-gray-600 hover:text-gray-800 hover:shadow-md transition-all" title="展开目录">
+                            <i class="fas fa-list-ul" style="color: var(--primary-color);"></i>
+                        </button>
+                    </div>
+                </aside>
+                
+                <!-- 右侧内容区 -->
+                <div class="content-area">
+                    <!-- 列表视图 -->
+                    <div id="teamOkrList" class="space-y-6"></div>
+                    
+                    <!-- 卡片视图 -->
+                    <div id="teamCardView" class="hidden"></div>
+                    
+                    <!-- 脑图视图 -->
+                    <div id="teamMindMapView" class="hidden relative w-full h-[800px] bg-white rounded-lg shadow-sm border overflow-hidden">
+                        <div id="teamMindMapViewChart" class="w-full h-full p-4" style="cursor: grab;"></div>
+                        <!-- 缩放控制面板 -->
+                        <div class="absolute bottom-8 right-8 flex flex-col bg-white shadow-lg rounded-lg border p-2 space-y-2 z-10" style="pointer-events: auto;">
+                            <button onclick="zoomMindMap(0.1)" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600 transition-colors" title="放大">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <div class="text-center text-xs text-gray-500 font-medium select-none" id="zoomLevelDisplay">100%</div>
+                            <button onclick="zoomMindMap(-0.1)" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600 transition-colors" title="缩小">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="border-t my-1"></div>
+                            <button onclick="resetMindMapZoom()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600 transition-colors" title="重置视图">
+                                <i class="fas fa-compress-arrows-alt"></i>
+                            </button>
+                        </div>
+                        <!-- 键盘操作提示 -->
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg border px-3 py-2 text-xs text-gray-600 z-10" style="pointer-events: auto;">
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-keyboard text-purple-500"></i>
+                                <span class="font-medium">方向键</span>
+                                <span>移动脑图</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 个人OKR Tab -->
+        <div id="content-personal" class="tab-content hidden">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">我的OKR</h2>
+                <button id="addPersonalObjectiveBtn" class="hidden text-white px-4 py-2 rounded-lg transition" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                    <i class="fas fa-plus mr-2"></i>添加目标
+                </button>
+            </div>
+            <div id="personalOkrList" class="space-y-6"></div>
+        </div>
+
+        <!-- 团队周报 Tab -->
+        <div id="content-reports" class="tab-content hidden">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">团队周报</h2>
+                <button onclick="openGenerateReportModal()" class="text-white px-4 py-2 rounded-lg transition hidden" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                    <i class="fas fa-magic mr-2"></i>生成本周周报
+                </button>
+            </div>
+            <div id="teamReportsList"></div>
+        </div>
+
+        <!-- 待办事项 Tab -->
+        
+        <div id="content-todos" class="tab-content hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">以终为始</h2>
+                <p class="mt-2 text-gray-600">管理和追踪所有待办事项，从目标出发，确保每项任务都朝着既定方向前进，实现高效的任务执行和成果交付。</p>
+                <div class="mt-4 flex flex-wrap gap-4">
+                    <input type="text" id="todoSearch" placeholder="搜索待办..." 
+                           class="flex-1 min-w-[200px] px-4 py-2 border rounded-lg" style="focus:ring-color: var(--primary-color);">
+                    <select id="todoStatusFilter" class="px-4 py-2 border rounded-lg">
+                        <option value="">全部状态</option>
+                        <option value="pending" selected>进行中</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                    <select id="todoSortBy" class="px-4 py-2 border rounded-lg">
+                        <option value="created_at">按创建时间</option>
+                        <option value="updated_at">按更新时间</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="todosList" class="space-y-4"></div>
+        </div>
+
+        <!-- 想法收集 Tab -->
+        
+        <div id="content-ideas" class="tab-content hidden">
+            <div class="mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">集思广益</h2>
+                    <p class="mt-2 text-gray-600">快速记录和管理创意想法，支持将想法转化为具体待办事项。</p>
+                </div>
+            </div>
+            
+            <!-- 快速输入框 -->
+            <div class="mb-8">
+                <div class="bg-yellow-50 rounded-xl shadow-sm border border-yellow-200 p-4">
+                    <textarea id="quickIdeaInput" rows="3" 
+                              class="w-full bg-transparent border-none focus:ring-0 text-gray-800 placeholder-gray-400 resize-none text-lg"
+                              placeholder="有什么新想法？记下来..."></textarea>
+                    <div class="flex justify-between items-center mt-2 pt-2 border-t border-yellow-100">
+                        <span class="text-xs text-gray-400">支持 Markdown</span>
+                        <button onclick="submitQuickIdea()" 
+                                class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 rounded-lg font-medium transition-colors shadow-sm">
+                            保存想法
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 想法列表 -->
+            <div id="ideasList" class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                <!-- 想法卡片将通过 JS 生成 -->
+            </div>
+        </div>
+
+        <!-- 下周计划 Tab -->
+        
+        <div id="content-next-week" class="tab-content hidden">
+            <div class="mb-6 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">知彼解己</h2>
+                        <p class="mt-2 text-gray-600">这里可以查看团队成员的下周工作计划，了解每个人的工作安排和任务优先级，促进团队协作和资源协调。</p>
+                    </div>
+                    <div class="flex bg-gray-100 rounded-lg p-1">
+                        <button onclick="switchNextWeekView('grid')" id="next-week-view-btn-grid" class="px-3 py-1 rounded-md text-sm font-medium bg-white shadow-sm text-gray-900 transition-all">
+                            <i class="fas fa-th mr-1"></i>网格
+                        </button>
+                        <button onclick="switchNextWeekView('mindmap')" id="next-week-view-btn-mindmap" class="px-3 py-1 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 transition-all">
+                            <i class="fas fa-project-diagram mr-1"></i>脑图
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <select id="nextWeekMemberFilter" class="px-3 py-1 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="">全部成员</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 网格视图 -->
+            <div id="nextWeekPlanGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- 内容将通过JavaScript动态生成 -->
+            </div>
+            
+            <!-- 脑图视图 -->
+            <div id="nextWeekMindMapView" class="hidden relative w-full h-[800px] bg-white rounded-lg shadow-sm border overflow-hidden">
+                <div id="nextWeekMindMapChart" class="w-full h-full" style="cursor: grab;"></div>
+                <!-- 缩放控制面板 -->
+                <div class="absolute bottom-8 right-8 flex flex-col bg-white shadow-lg rounded-lg border p-2 space-y-2 z-10" style="pointer-events: auto;">
+                    <button onclick="zoomNextWeekMindMap(0.1)" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600 transition-colors" title="放大">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="text-center text-xs text-gray-500 font-medium select-none" id="nextWeekZoomLevelDisplay">100%</div>
+                    <button onclick="zoomNextWeekMindMap(-0.1)" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600 transition-colors" title="缩小">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <div class="border-t my-1"></div>
+                    <button onclick="resetNextWeekMindMapZoom()" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded text-gray-600 transition-colors" title="重置视图">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 百宝箱 Tab -->
+        
+        <div id="content-platforms" class="tab-content hidden">
+            <div class="mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">统合综效</h2>
+                    <p class="mt-2 text-gray-600">汇集和管理各类常用平台、工具和资源，提供便捷的分类搜索功能，整合内外部资源，提升工作效率，实现协同增效。</p>
+                </div>
+                <button id="addPlatformBtn" class="text-white px-4 py-2 rounded-lg transition" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                    <i class="fas fa-plus mr-2"></i>我要添加
+                </button>
+            </div>
+            <div class="mb-6 flex flex-wrap gap-4">
+                <input type="text" id="platformSearch" placeholder="搜索平台..." 
+                       class="flex-1 min-w-[200px] px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                       oninput="filterPlatforms()">
+                <select id="platformTagFilter" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        onchange="filterPlatforms()">
+                    <option value="">全部标签</option>
+                </select>
+            </div>
+            <div id="platformsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- 平台卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 不断更新 Tab -->
+        <div id="content-continuous-improvement" class="tab-content hidden">
+            <div class="mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">不断更新</h2>
+                <p class="mt-2 text-gray-600">保持学习，紧跟行业动态，持续提升自己。</p>
+            </div>
+            <!-- 子Tab切换 -->
+            <div class="flex space-x-1 mb-4 bg-gray-100 rounded-lg p-1 w-fit">
+                <button id="ci-tab-ai" 
+                        class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-purple-700 shadow-sm">
+                    <i class="fas fa-robot mr-1.5"></i>AI 动态
+                </button>
+                <button id="ci-tab-game" 
+                        class="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-gamepad mr-1.5"></i>游戏动态
+                </button>
+            </div>
+            <!-- AI动态 iframe -->
+            <div id="ci-panel-ai" class="w-full h-[calc(100vh-300px)] bg-white rounded-lg shadow-sm border overflow-hidden relative">
+                <div id="continuousImprovementLoading" class="absolute inset-0 flex items-center justify-center bg-gray-50">
+                    <div class="text-center">
+                        <div class="spinner mb-4"></div>
+                        <p class="text-gray-600">正在加载内容...</p>
+                    </div>
+                </div>
+                <iframe id="continuousImprovementIframe"
+                        data-src="https://ai-dynamic.devcloud.woa.com/static/index.html" 
+                        class="w-full h-full border-0 hidden"
+                        title="AI动态"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <!-- 游戏动态 简报 -->
+            <div id="ci-panel-game" class="w-full h-[calc(100vh-300px)] bg-white rounded-lg shadow-sm border overflow-hidden relative hidden">
+                <!-- 顶部栏 -->
+                <div class="flex items-center justify-between px-6 py-4 border-b bg-gradient-to-r from-orange-50 to-amber-50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-gamepad text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">游戏行业动态</h3>
+                            <p class="text-xs text-gray-500">实时跟踪游戏行业前沿</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="gameNewsRefreshBtn" class="px-3 py-1.5 text-sm bg-white border rounded-lg hover:bg-gray-50 transition text-gray-600">
+                            <i class="fas fa-sync-alt mr-1"></i>刷新
+                        </button>
+                        <span id="gameNewsTime" class="text-xs text-gray-400"></span>
+                    </div>
+                </div>
+                <!-- 搜索栏 -->
+                <div class="px-6 py-3 border-b bg-gray-50">
+                    <div class="relative max-w-md">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input id="gameNewsSearch" type="text" placeholder="搜索关键词..." 
+                               class="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300">
+                    </div>
+                </div>
+                <!-- 加载状态 -->
+                <div id="gameNewsLoading" class="flex items-center justify-center py-20">
+                    <div class="text-center">
+                        <div class="spinner mb-4"></div>
+                        <p class="text-gray-600">正在获取游戏新闻...</p>
+                    </div>
+                </div>
+                <!-- 新闻列表 -->
+                <div id="gameNewsList" class="overflow-y-auto px-6 py-4 space-y-4" style="max-height: calc(100vh - 460px);"></div>
+                <!-- 空状态 -->
+                <div id="gameNewsEmpty" class="hidden flex items-center justify-center py-20">
+                    <div class="text-center text-gray-400">
+                        <i class="fas fa-newspaper text-4xl mb-3"></i>
+                        <p>暂无游戏新闻</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 添加/编辑Objective模态框 -->
+    <div id="objectiveModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">添加Objective</h3>
+            <form id="objectiveForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+                    <input type="text" id="objContent" required 
+                           placeholder="用一句话描述你的目标..."
+                           class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div class="mb-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">目标类型</label>
+                        <select id="objType" required 
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="业务">业务</option>
+                            <option value="管理">管理</option>
+                            <option value="专业">专业</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">权重（%）</label>
+                        <input type="number" id="objWeight" required min="0" max="100" value="0"
+                               placeholder="0-100"
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('objectiveModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加Key Result模态框 -->
+    <div id="krModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">添加Key Result</h3>
+            <form id="krForm">
+                <input type="hidden" id="krObjectiveId">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+                    <input type="text" id="krContent" required 
+                           placeholder="用一句话描述关键结果..."
+                           class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('krModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加个人Objective模态框 -->
+    <div id="personalObjectiveModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">添加个人Objective</h3>
+            <form id="personalObjectiveForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+                    <input type="text" id="personalObjContent" required 
+                           placeholder="用一句话描述你的个人目标..."
+                           class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div class="mb-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">目标类型</label>
+                        <select id="personalObjType" required 
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="业务">业务</option>
+                            <option value="管理">管理</option>
+                            <option value="专业">专业</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">权重（%）</label>
+                        <input type="number" id="personalObjWeight" required min="0" max="100" value="0"
+                               placeholder="0-100"
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('personalObjectiveModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加个人Key Result模态框 -->
+    <div id="personalKRModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">添加个人Key Result</h3>
+            <form id="personalKRForm">
+                <input type="hidden" id="personalKRObjId">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">内容</label>
+                    <input type="text" id="personalKRContent" required 
+                           placeholder="用一句话描述个人关键结果..."
+                           class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('personalKRModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 创建待办模态框 -->
+    <div id="todoModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">创建待办</h3>
+            <form id="todoForm">
+                <input type="hidden" id="todoAssigneeEng">
+                <input type="hidden" id="todoAssigneeChn">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">待办内容 <span class="text-red-500">*</span></label>
+                    <textarea id="todoDescription" rows="5" required
+                              placeholder="请输入待办内容（支持Markdown格式）"
+                              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">跟进人</label>
+                    <select id="todoAssignee" required 
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            onchange="handleTodoAssigneeChange()">
+                        <option value="">请选择跟进人</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('todoModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        创建
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑待办模态框 -->
+    <div id="editTodoModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">编辑待办</h3>
+            <form id="editTodoForm" onsubmit="handleEditTodoSubmit(event)">
+                <input type="hidden" id="editTodoId">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">待办内容 <span class="text-red-500">*</span></label>
+                    <textarea id="editTodoDescription" rows="5" required
+                              placeholder="请输入待办内容（支持Markdown格式）"
+                              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">跟进人</label>
+                    <select id="editTodoAssignee" required 
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="">请选择跟进人</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('editTodoModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 想法转待办模态框 -->
+    <div id="convertIdeaModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">转为待办</h3>
+            <form id="convertIdeaForm">
+                <input type="hidden" id="convertIdeaId">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">标题</label>
+                    <textarea id="convertIdeaTitle" rows="3" required 
+                              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">跟进人</label>
+                    <select id="convertIdeaAssignee" required 
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="">请选择跟进人</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('convertIdeaModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        确认转换
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑想法模态框 -->
+    <div id="editIdeaModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl mx-4">
+            <h3 class="text-xl font-bold mb-4">编辑想法</h3>
+            <form id="editIdeaForm" onsubmit="handleEditIdeaSubmit(event)">
+                <input type="hidden" id="editIdeaId">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">想法内容</label>
+                    <textarea id="editIdeaContent" rows="5" required 
+                              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                              placeholder="输入你的想法..."></textarea>
+                    <p class="text-xs text-gray-500 mt-1">支持 Markdown 格式</p>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('editIdeaModal')" 
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        取消
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加平台模态框 -->
+    <div id="platformModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-bold mb-4" id="platformModalTitle">添加平台</h3>
+            <form id="platformForm">
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">平台名称 <span class="text-red-500">*</span></label>
+                    <input type="text" id="platformName" required 
+                           placeholder="请输入平台名称"
+                           class="w-full px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">分类 <span class="text-red-500">*</span></label>
+                    <select id="platformCategory" required 
+                            class="w-full px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+                        <option value="文档知识">文档知识</option>
+                        <option value="实用工具">实用工具</option>
+                        <option value="需求相关">需求相关</option>
+                        <option value="游戏动态">游戏动态</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">链接 <span class="text-red-500">*</span></label>
+                    <input type="url" id="platformUrl" required 
+                           placeholder="https://example.com"
+                           class="w-full px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">说明</label>
+                    <textarea id="platformDescription" rows="2" 
+                              placeholder="请输入平台说明"
+                              class="w-full px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">缩略图 <span class="text-red-500">*</span></label>
+                    <div id="platformThumbnailArea" 
+                         class="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center hover:border-purple-500 transition-colors cursor-pointer"
+                         onclick="document.getElementById('platformThumbnailInput').click()">
+                        <div id="platformThumbnailPreview" class="hidden">
+                            <img id="platformThumbnailImg" src="" alt="缩略图预览" class="max-h-32 mx-auto mb-1">
+                            <button type="button" onclick="event.stopPropagation(); removePlatformThumbnail()" 
+                                    class="text-red-500 hover:text-red-700 text-xs">
+                                删除图片
+                            </button>
+                        </div>
+                        
+                        <div id="platformThumbnailPlaceholder">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-1"></i>
+                            <p class="text-gray-500 text-xs mb-1">点击上传或拖拽图片到此处</p>
+                            <p class="text-xs text-gray-400">支持 jpg、png、gif、webp、bmp 格式，最大5MB</p>
+                            <p class="text-xs text-purple-500">支持从剪贴板粘贴图片</p>
+                        </div>
+                    </div>
+                    <input type="file" id="platformThumbnailInput" accept="image/*" style="display: none;" 
+                           onchange="handlePlatformThumbnailUpload(event)">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">标签（可选）</label>
+                    <div class="flex items-center gap-2 mb-1">
+                        <input type="text" id="platformTagInput" 
+                               placeholder="输入标签后按回车添加"
+                               class="flex-1 px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
+                        <button type="button" onclick="addPlatformTag()" 
+                                class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm">
+                            添加
+                        </button>
+                    </div>
+                    
+                    <div id="platformTagsContainer" class="flex flex-wrap gap-1">
+                        <!-- 标签将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('platformModal')" 
+                            class="px-3 py-1.5 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm">
+                        取消
+                    </button>
+                    
+                    <button type="submit" 
+                            class="px-3 py-1.5 text-white rounded-lg text-sm" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI生成确认模态框 -->
+    <div id="aiModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-3xl mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">AI生成的整体进展草稿</h3>
+                <div class="flex items-center space-x-2">
+                    <button type="button" id="aiPreviewBtn" onclick="switchAIView('preview')" 
+                            class="px-3 py-1 text-sm rounded-lg bg-white border-2 transition-all" 
+                            style="border-color: var(--primary-color); color: var(--primary-color);">
+                        <i class="fas fa-eye mr-1"></i>预览
+                    </button>
+                    <button type="button" id="aiEditBtn" onclick="switchAIView('edit')" 
+                            class="px-3 py-1 text-sm rounded-lg bg-gray-100 border-2 border-gray-300 text-gray-600 transition-all">
+                        <i class="fas fa-edit mr-1"></i>编辑
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 预览模式 -->
+            <div id="aiDraftPreview" class="mb-4">
+                <div id="aiDraftContent" class="markdown-content bg-gray-50 p-4 rounded-lg border"></div>
+            </div>
+            
+            <!-- 编辑模式 -->
+            <div id="aiDraftEdit" class="mb-4 hidden">
+                <textarea id="aiDraftTextarea" 
+                          class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
+                          rows="15"
+                          placeholder="在此编辑AI生成的内容..."></textarea>
+                <div class="mt-2 text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>支持Markdown语法
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="event.stopPropagation(); closeModal('aiModal')" 
+                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                    取消
+                </button>
+                <button type="button" onclick="event.stopPropagation(); confirmAIDraft()" 
+                        class="px-4 py-2 text-white rounded-lg" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                    确认更新
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生成团队周报模态框（全屏） -->
+    <div id="generateReportModal" class="modal">
+        <div class="fixed inset-0 bg-white z-50 flex flex-col">
+            <!-- 顶部工具栏 -->
+            <div class="flex justify-between items-center px-6 py-4 border-b bg-gray-50">
+                <button onclick="closeGenerateReportModal()" class="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
+                    <i class="fas fa-times mr-2"></i>取消
+                </button>
+                <input type="text" id="reportTitle" placeholder="周报标题" 
+                       class="flex-1 mx-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <button onclick="saveReport()" class="text-white px-6 py-2 rounded-lg transition" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                    <i class="fas fa-save mr-2"></i>保存
+                </button>
+            </div>
+            
+            <!-- 主内容区：Cherry Markdown编辑器 -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Cherry Markdown 编辑器容器 -->
+                <div id="reportCherryEditor" class="w-full h-full"></div>
+            </div>
+            
+            <!-- 底部优化输入框 -->
+            <div class="px-6 py-4 border-t bg-gray-50">
+                <div class="flex items-center space-x-3">
+                    <input type="text" id="reportOptimizePrompt" 
+                           placeholder="输入优化要求，例如：更简洁一些、突出重点、添加数据支撑..." 
+                           class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           onkeypress="if(event.key==='Enter') optimizeReport()">
+                    <button onclick="optimizeReport()" class="text-white px-6 py-2 rounded-lg transition" style="background-color: #8A2BE2;" onmouseover="this.style.backgroundColor='#7B27A5'" onmouseout="this.style.backgroundColor='#8A2BE2'">
+                        <i class="fas fa-magic mr-2"></i>二次优化
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看周报模态框（全屏） -->
+    
+    <div id="viewReportModal" class="modal" style="z-index: 10030;">
+        <div class="bg-white w-full h-full overflow-hidden flex flex-col">
+            <div class="px-8 py-6 border-b flex justify-between items-center bg-gray-50">
+                <div>
+                    <h3 id="viewReportTitle" class="text-2xl font-bold text-gray-900"></h3>
+                    <div id="viewReportMeta" class="text-sm text-gray-500 mt-2"></div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- 字体缩放控制 -->
+                    
+                    <div class="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg border border-gray-200">
+                        <button onclick="adjustReportFontSize(-1)" class="text-gray-600 hover:text-gray-900 px-2 py-1 hover:bg-gray-100 rounded transition-colors" title="缩小字体">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        
+                        <span id="reportFontSizeDisplay" class="text-sm text-gray-600 min-w-[3rem] text-center">100%</span>
+                        
+                        <button onclick="adjustReportFontSize(1)" class="text-gray-600 hover:text-gray-900 px-2 py-1 hover:bg-gray-100 rounded transition-colors" title="放大字体">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        
+                        <button onclick="resetReportFontSize()" class="text-gray-600 hover:text-gray-900 px-2 py-1 hover:bg-gray-100 rounded transition-colors text-xs" title="重置">
+                            重置
+                        </button>
+                    </div>
+                    
+                    <!-- 记TODO按钮 -->
+                    
+                    <button onclick="openQuickTodoFromReport()" class="text-green-600 hover:text-green-900 px-4 py-2 rounded-lg border border-green-300 hover:bg-green-50 transition-colors" title="快速记录TODO">
+                        <i class="fas fa-plus-circle mr-1"></i>记TODO
+                    </button>
+                    
+                    <!-- 编辑按钮（仅管理员可见） -->
+                    
+                    <button id="viewReportEditBtn" onclick="editReportFromView()" class="hidden text-blue-600 hover:text-blue-900 px-4 py-2 rounded-lg border border-blue-300 hover:bg-blue-50 transition-colors" title="编辑">
+                        <i class="fas fa-edit mr-1"></i>编辑
+                    </button>
+                    
+                    <!-- 关闭按钮 -->
+                    
+                    <button onclick="closeModal('viewReportModal')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 主内容区（包含左侧目录和右侧内容） -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- 左侧目录（仅在大屏幕显示，默认在xl屏幕展开，其他尺寸折叠） -->
+                <aside id="reportViewSidebar" class="sidebar xl:block">
+                    <!-- 展开时的完整目录 -->
+                    <div class="sticky top-6 bg-white rounded-lg shadow-sm border p-4 sidebar-expanded">
+                        <div class="flex items-center justify-between mb-4 sidebar-header">
+                            <h3 class="font-bold text-gray-900">
+                                <i class="fas fa-list-ul mr-2" style="color: var(--primary-color);"></i>目录
+                            </h3>
+                            <button id="toggleReportSidebarBtn" onclick="toggleReportSidebar()" class="text-gray-400 hover:text-gray-600" title="收起">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        
+                        <nav id="reportViewToc" class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto sidebar-content">
+                            <!-- 目录内容将通过JavaScript动态生成 -->
+                        </nav>
+                    </div>
+                    
+                    <!-- 收起时的按钮 -->
+                    <div class="sticky top-6 sidebar-collapsed hidden">
+                        <button id="expandReportSidebarBtn" onclick="toggleReportSidebar()" class="w-full flex items-center justify-center bg-white rounded-lg shadow-sm border p-3 text-gray-600 hover:text-gray-800 hover:shadow-md transition-all" title="展开目录">
+                            <i class="fas fa-list-ul" style="color: var(--primary-color);"></i>
+                        </button>
+                    </div>
+                </aside>
+                
+                <!-- 右侧内容区 -->
+                <div class="flex-1 overflow-auto px-8 report-content-area">
+                    <div id="viewReportCherryEditor" class="max-w-7xl mx-auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载提示 -->
+    
+    <div id="loadingOverlay" class="modal">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- 图片上传隐藏输入 -->
+    
+    <input type="file" id="imageUploadInput" accept="image/*" style="display: none;">
+
+    <!-- 周报图片上传隐藏输入 -->
+    
+    <input type="file" id="reportImageUploadInput" accept="image/*" style="display: none;" onchange="handleReportImageUpload(event)">
+
+    <!-- 链接预览半屏面板（桌面端） -->
+    <div id="linkPreviewPanel" class="hidden fixed right-0 top-0 h-full w-1/2 bg-white shadow-2xl z-[10040] flex flex-col transition-transform duration-300 ease-in-out">
+        <!-- 面板头部 -->
+        <div class="bg-gray-50 border-b px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-external-link-alt text-gray-500"></i>
+                <span id="linkPreviewTitle" class="text-sm text-gray-600 truncate max-w-md">链接预览</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- 全屏打开按钮 -->
+                <button onclick="openLinkInNewTab()" class="text-gray-600 hover:text-blue-600 px-3 py-1.5 rounded-md hover:bg-blue-50 transition-colors" title="在新标签页中打开">
+                    <i class="fas fa-expand-alt mr-1"></i>
+                    <span class="text-xs">全屏打开</span>
+                </button>
+                <!-- 关闭按钮 -->
+                <button onclick="closeLinkPreviewPanel()" class="text-gray-600 hover:text-red-600 px-3 py-1.5 rounded-md hover:bg-red-50 transition-colors" title="关闭">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <!-- iframe内容区 -->
+        <div class="flex-1 overflow-hidden">
+            <iframe id="linkPreviewIframe" class="w-full h-full border-0" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+        </div>
+    </div>
+
+    <!-- 半屏面板遮罩层 -->
+    <div id="linkPreviewOverlay" class="hidden fixed inset-0 bg-black bg-opacity-30 z-[10019]" onclick="closeLinkPreviewPanel()"></div>
+
+    <!-- 设置面板 -->
+    <div id="settingsPanel" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[10050] flex items-center justify-center">
+        <div class="bg-white w-full max-w-6xl h-[90vh] rounded-lg shadow-2xl flex overflow-hidden">
+            <!-- 左侧导航 -->
+            <div class="w-64 bg-gray-50 border-r p-6 flex flex-col">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">设置</h2>
+                <nav class="space-y-1 flex-1">
+                    <button onclick="switchSettingsTab('basic')" id="settings-tab-basic" class="settings-tab-btn active w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3">
+                        <i class="fas fa-cog text-gray-600"></i>
+                        <span>基础设置</span>
+                    </button>
+                    <button onclick="switchSettingsTab('ai')" id="settings-tab-ai" class="settings-tab-btn w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3">
+                        <i class="fas fa-brain text-gray-600"></i>
+                        <span>AI 配置</span>
+                    </button>
+                    <button onclick="switchSettingsTab('cos')" id="settings-tab-cos" class="settings-tab-btn w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3">
+                        <i class="fas fa-cloud text-gray-600"></i>
+                        <span>COS设置</span>
+                    </button>
+                </nav>
+                <!-- 版本信息 -->
+                <div class="mt-auto pt-4 border-t border-gray-200">
+                    <div class="text-xs text-gray-500 flex items-center space-x-2">
+                        <i class="fas fa-code-branch"></i>
+                        <span>版本：<span id="systemVersion" class="font-mono">加载中...</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧内容区 -->
+            <div class="flex-1 flex flex-col">
+                <!-- 顶部工具栏 -->
+                <div class="border-b px-8 py-4 flex justify-between items-center">
+                    <h3 id="settingsTitle" class="text-2xl font-bold text-gray-900">基础设置</h3>
+                    <button onclick="closeSettings()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <!-- 内容区 -->
+                <div class="flex-1 overflow-y-auto px-8 py-6">
+                    <!-- 基础设置 -->
+                    <div id="settings-content-basic" class="settings-content">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">站点标题</label>
+                                <input type="text" id="config-site-title" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="网站顶部显示的标题名称">
+                                <p class="text-xs text-gray-500 mt-1">网站顶部显示的标题名称</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">企微机器人 Webhook 地址</label>
+                                <input type="text" id="config-wework-webhook" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...">
+                                <p class="text-xs text-gray-500 mt-1">配置后，创建待办时会自动通过企微机器人发送通知并@对应成员</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">完整功能访问白名单</label>
+                                <textarea id="config-white-list" rows="6" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="每行一个部门或用户名，为空则表示全司同事都可以获得完整功能使用（不建议）"></textarea>
+                                <p class="text-xs text-gray-500 mt-1">在这个白名单内的用户可以使用除了管理员高级操作之外的其他全部功能。每行一个部门名称或用户英文名，只有在白名单中的用户才能访问系统</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">OKR脑图访问白名单</label>
+                                <textarea id="config-okr-white-list" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="每行一个部门或用户名，为空则表示全司同事都能看到 OKR 脑图"></textarea>
+                                <p class="text-xs text-gray-500 mt-1">在这个白名单内的用户只能看到OKR的脑图视图，无法认领和填写进展，也无法使用其他板块的功能</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI配置 -->
+                    <div id="settings-content-ai" class="settings-content hidden">
+                        <div class="space-y-8">
+                            <!-- 主 Agent 配置 -->
+                            <div class="border-b pb-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                    <i class="fas fa-brain text-purple-600 mr-2"></i>
+                                    主 Agent 配置
+                                </h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">模型名称</label>
+                                        <input type="text" id="config-ai-model" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="qcloud-deepseek-v3.2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">API Key</label>
+                                        <input type="password" id="config-ai-api-key" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="输入API密钥">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">API Base URL</label>
+                                        <input type="text" id="config-ai-api-base-url" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="https://api-qpilot.woa.com/v1">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Temperature</label>
+                                            <input type="number" id="config-ai-temperature" step="0.1" min="0" max="2" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="0.7">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Timeout (秒)</label>
+                                            <input type="number" id="config-ai-timeout" min="1" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="60">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">AI 助手系统提示词</label>
+                                        <textarea id="config-ai-system-prompt" rows="6" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="你是一个智能助手..."></textarea>
+                                        <p class="text-xs text-gray-500 mt-1">定义 AI 助手的角色和行为（同时用于 ReACT Agent 的规划能力）</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">OKR数据查询技能描述</label>
+                                        <textarea id="config-sql-query-tool-description" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="执行 SQL 查询来获取 OKR 系统的数据..."></textarea>
+                                        <p class="text-xs text-gray-500 mt-1">定义数据查询工具的功能描述，方便 AI 理解周报系统的数据库字段</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">建议问题（每行一个）</label>
+                                        <textarea id="config-ai-suggested-questions" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="团队里现在大家都在做什么？"></textarea>
+                                        <p class="text-xs text-gray-500 mt-1">AI 助手聊天窗口初始显示的建议问题</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Prompt 配置 -->
+                            <div class="border-b pb-6">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                    <i class="fas fa-comment-dots text-blue-600 mr-2"></i>
+                                    Prompt 配置
+                                </h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">整体进展生成提示词</label>
+                                        <textarea id="config-prompt-generate-overall" rows="6" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="请根据以下周进展记录，生成一份简洁的整体进展汇总..."></textarea>
+                                        <p class="text-xs text-gray-500 mt-1">用于AI生成整体进展的提示词模板，使用 {weekly_progress} 和 {current_overall} 作为占位符</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">团队周报生成提示词</label>
+                                        <textarea id="config-prompt-generate-team-report" rows="6" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm" placeholder="请根据以下团队OKR数据和进展信息，生成一份本周团队周报..."></textarea>
+                                        <p class="text-xs text-gray-500 mt-1">用于AI生成团队周报的提示词模板，使用 {team_okr_data} 作为团队OKR数据占位符，{last_week_report} 作为上一篇周报内容占位符，{today_date} 作为今天日期占位符</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- QPilot 绑定 -->
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                    <i class="fas fa-robot text-green-600 mr-2"></i>
+                                    QPilot 绑定
+                                </h4>
+                                <p class="text-sm text-gray-600 mb-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                    <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+                                    以工具调用的形式调用 QPilot 上的 Agent，以扩充 Agent 的能力
+                                </p>
+                                <div class="space-y-4">
+                                    <div id="qpilotList" class="space-y-4">
+                                        <!-- QPilot 配置项将通过 JavaScript 动态生成 -->
+                                    </div>
+                                    <button type="button" onclick="addQPilotConfig()" 
+                                            class="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-green-500 hover:text-green-600 transition-colors flex items-center justify-center space-x-2">
+                                        <i class="fas fa-plus"></i>
+                                        <span>添加 QPilot</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- COS配置 -->
+                    <div id="settings-content-cos" class="settings-content hidden">
+                        <div class="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-yellow-600 mt-0.5 mr-3"></i>
+                                <div class="text-sm text-yellow-800">
+                                    <p class="font-medium mb-1">用于配置图片上传的 COS。</p>
+                                    <p>如果没设置，则使用本站上传。但要注意：如果使用本站上传，所有图片是上传到当前版本的镜像上的。一旦当前站点发布了新版本，则所有历史上传的图片将丢失！因此如果有站点维护更新的需求，依然建议配置 COS。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Secret ID</label>
+                                <input type="text" id="config-cos-secret-id" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="输入COS Secret ID">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Secret Key</label>
+                                <input type="password" id="config-cos-secret-key" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="输入COS Secret Key">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                                    <input type="text" id="config-cos-region" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="ap-guangzhou">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Bucket</label>
+                                    <input type="text" id="config-cos-bucket" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="your-bucket-name">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Domain</label>
+                                <input type="text" id="config-cos-domain" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="例如: https://your-bucket-name.cos.ap-guangzhou.myqcloud.com">
+                                <p class="text-xs text-gray-500 mt-1">自定义COS访问域名（留空则使用默认内网域名）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 底部按钮 -->
+                <div class="border-t px-8 py-4 flex justify-between items-center">
+                    <!-- 左侧：导入/导出按钮 -->
+                    <div class="flex space-x-3">
+                        <button onclick="exportConfig()" class="px-4 py-2 text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors flex items-center space-x-2">
+                            <i class="fas fa-download"></i>
+                            <span>导出配置</span>
+                        </button>
+                        <button onclick="document.getElementById('importConfigInput').click()" class="px-4 py-2 text-green-600 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors flex items-center space-x-2">
+                            <i class="fas fa-upload"></i>
+                            <span>导入配置</span>
+                        </button>
+                        <input type="file" id="importConfigInput" accept=".json" class="hidden" onchange="importConfig(event)">
+                    </div>
+                    
+                    <!-- 右侧：保存和取消按钮 -->
+                    <div class="flex space-x-3">
+                        <button onclick="closeSettings()" class="px-6 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">
+                            取消
+                        </button>
+                        <button onclick="saveSettings()" class="px-6 py-2 text-white rounded-lg transition-colors" style="background-color: var(--primary-color);" onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+                            保存设置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚签名 -->
+    <footer class="mt-12 py-6 text-center text-gray-500 text-sm border-t">
+        <p>Created by josephpan</p>
+    </footer>
+
+    <!-- 演讲者模式容器 -->
+    <div id="presenterModeOverlay" class="hidden">
+        <button class="exit-button" onclick="exitPresenterMode()">
+            <i class="fas fa-times mr-2"></i>退出演讲者模式
+        </button>
+        <div class="presenter-header">
+            <h1 class="presenter-title">团队OKR展示</h1>
+        </div>
+        <div id="presenterContent" class="presenter-content"></div>
+        <div class="page-info">按 ESC 键退出 | 滚动浏览</div>
+    </div>
+
+    <script src="/static/image-handler.js"></script>
+    <!-- Cherry Markdown 辅助工具 -->
+    <script src="/static/js/cherry-markdown-helper.js"></script>
+    <!-- 模块化脚本 -->
+    <script src="/static/js/state.js"></script>
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/tabs.js?v=20260303d"></script>
+    <script src="/static/js/team-okr.js"></script>
+    <script src="/static/js/personal-okr.js"></script>
+    <script src="/static/js/todos.js"></script>
+    <script src="/static/js/ideas.js"></script>
+    <script src="/static/js/reports.js"></script>
+    <script src="/static/js/next-week-plan.js"></script>
+    <script src="/static/js/platforms.js"></script>
+    <script src="/static/js/image-upload.js"></script>
+    <script src="/static/js/export.js"></script>
+    <script src="/static/js/presenter-mode.js"></script>
+    <script src="/static/js/settings.js"></script>
+    <!-- 主入口文件 -->
+    <script src="/static/app.js"></script>
+    <script src="/static/ai-chat.js"></script>
+</body>
+</html>
